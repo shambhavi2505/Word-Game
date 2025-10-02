@@ -9,7 +9,7 @@ word_bank = [
     'butter_chicken', 'brownie', 'rasmalai', 'bread_pakoda', 'popcorn'
 ]
 
-# Personalized hints
+# Hints
 word_hints = {
     'golgappa': 'Crunchy & tangy street snack',
     'momos': 'Steamed or fried favorite',
@@ -42,7 +42,6 @@ if 'word' not in st.session_state:
     st.session_state.guessWord = [' ' if c == '_' else '_' for c in st.session_state.word]
     st.session_state.attempts = 5
     st.session_state.guessed_letters = []
-    st.session_state.input_guess = ""  # input box state
 
 # Title and info
 st.title("Word Guessing Game")
@@ -50,10 +49,10 @@ st.write(f"Hint: {st.session_state.hint}")
 st.write(f"Attempts left: {st.session_state.attempts}")
 st.write('Current word: ' + ' '.join(st.session_state.guessWord))
 
-# Input box for guessing letters
-guess = st.text_input("Guess a letter:", key="input_guess").lower()
-
-if guess:
+# Function to handle guess submission
+def process_guess():
+    guess = st.session_state.input_guess.lower()
+    st.session_state.input_guess = ""  # Clear input safely
     if len(guess) != 1:
         st.warning("Please enter only a single letter.")
     elif guess in st.session_state.guessed_letters:
@@ -69,11 +68,13 @@ if guess:
             st.session_state.attempts -= 1
             st.error(f"Wrong guess! Attempts left: {st.session_state.attempts}")
 
-    # Clear input box after processing the guess
-    st.session_state.input_guess = ""
+# Input box with callback
+st.text_input("Guess a letter:", key="input_guess", max_chars=1, on_change=process_guess)
 
 # Check win/loss
 if '_' not in st.session_state.guessWord:
     st.success(f"Congrats! You guessed the word correctly: {st.session_state.word.replace('_',' ')}")
 elif st.session_state.attempts == 0:
     st.error(f"You've run out of attempts! The word was: {st.session_state.word.replace('_',' ')}")
+
+
