@@ -44,7 +44,7 @@ if 'word' not in st.session_state:
     st.session_state.guessed_letters = []
 
 # Title and info
-st.title("Word Guessing Game")
+st.title("Guess the Dish!")
 st.write(f"Hint: {st.session_state.hint}")
 st.write(f"Attempts left: {st.session_state.attempts}")
 st.write('Current word: ' + ' '.join(st.session_state.guessWord))
@@ -76,5 +76,6 @@ if '_' not in st.session_state.guessWord:
     st.success(f"Congrats! You guessed the word correctly: {st.session_state.word.replace('_',' ')}")
 elif st.session_state.attempts == 0:
     st.error(f"You've run out of attempts! The word was: {st.session_state.word.replace('_',' ')}")
+
 
 
